@@ -1,100 +1,108 @@
 import React, { Component } from 'react'
-import Navbar from "../components/Navbar/Navbar";
-import draftkitappAPI from '../api/draftkitappAPI.js'
-import PlayerProjectionList from '../components/Lists/PlayerProjectionList.js'
-import * as ReactBootStrap from 'react-bootstrap'
+import Navbar from "../components/Navbar/Navbar"
 
-class HomePage extends Component {
+import { StickyContainer, Sticky } from "react-sticky"
+import draftkitappAPI from '../api/draftkitappAPI.js'
+import ADPList from '../components/Lists/ADPList.js'
+import LeagueList from '../components/Lists/LeagueList.js'
+import PickList from '../components/Lists/PickList.js'
+
+
+import "bootstrap/dist/css/bootstrap.min.css"
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
+import "./styles.css"
+
+
+class DraftPlanPage extends Component {
+
   state = {
-    players: []
+    players: [],
+    league: [],
+    ADP: [],
   }
 
   componentDidMount(){
-    draftkitappAPI.fetchPlayerProjections()
-      .then((APIresponse) => {
+    const id = this.props.match.params.id
+    draftkitappAPI.fetchLeagueByID(id,localStorage.getItem("auth-user"))
+      .then((APIresponseLeague) => {
         this.setState({
-          players: APIresponse
+          league: APIresponseLeague
+          
+        })
+        console.log(this.state.league)
+        
+      })
+    
+    
+    draftkitappAPI.fetchPlayerProjections()
+      .then((APIresponsePlayer) => {
+        this.setState({
+          players: APIresponsePlayer
+          
         })
         console.log(this.state.players)
-      }
-    )
+      })
+
+    draftkitappAPI.fetchPlayerADP()
+      .then((APIresponsePlayerADP) => {
+        this.setState({
+          ADP: APIresponsePlayerADP
+          
+        })
+        console.log(this.state.ADP)
+      })
   }
 
-  updatePlayerStats() {
-    let updatedPlayerStats = this.state.players.map((player, index) => {
-      return ( 
-        <li key={`${player.PlayerID}`}> 
-          {
-            // PlayerID: `${player.PlayerID}`,
-            // Name: `${player.Name}`,
-            // Position: `${player.Name}`,
-          }
-        </li>
-      )
-    })
-    // console.log(updatedPlayerStats)
+  savePicks() {
+    console.log("hello")
   }
+
+
+
 
   render() {
     return (
+ 
       <div>
-
-        <div className="ResearchPage">
-          <Navbar />
-        </div>
-
-        <div>
-        <h1> Player Projectionsasdgafg
-        </h1>
-
-          {/* <div>
-            <PlayerProjectionList players={"hello"} />
-          </div> */}
-
-          {/* _________________________ */}
-          <ReactBootStrap.Table striped bordered hover>
-          <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Pos</th>
-                <th>PasY</th>
-                <th>PasTD</th>
-                <th>RuY</th>
-                <th>RuTD</th>
-                <th>RecY</th>
-                <th>RecTD</th>
-                <th>F Pts</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-              this.state.players.map(item => (
-                <tr key = { item.PlayerID }>
-                  <td>{ item.PlayerID }</td>
-                  <td>{ item.Name }</td>
-                  <td>{ item.Position }</td>
-                  <td>{ item.PassingYards }</td>
-                  <td>{ item.PassingTouchdowns }</td>
-                  <td>{ item.RushingYards }</td>
-                  <td>{ item.RushingTouchdowns }</td>
-                  <td>{ item.ReceivingYards }</td>
-                  <td>{ item.ReceivingTouchdowns }</td>
-                  <td>{ item.FantasyPointsFantasyDraft }</td>
-              
-
-                </tr>
+        <Navbar />
+        <h2>Top element</h2>
+        <div className = "row">
+          <div className = "col">
+            <div style={{ maxHeight: "500px", overflowY: "auto" }}>
             
-              ))
-              }
-            </tbody>  
-            </ReactBootStrap.Table>
-        
+              <StickyContainer>
+              
+                <button onClick={this.savePicks}>Update Rankings</button>
+                <div className = "color1">
+                  <ADPList ADP={this.state.ADP} />
+                </div>
+              
+              </StickyContainer>
+            </div>
+          </div>
+          <div className = "col">
+            <button onClick={this.savePicks}>Save Picks</button>
+            <div className = "color1">
+              <PickList />
+            </div>
+          </div>
+          <div className="col">
+            <div className = "color2">
+              3 of 3
+            </div>
+          </div>
         </div>
       </div>
+
+  
+
+
+
+
     )
   }
 }
 
-export default HomePage
+export default DraftPlanPage
+
 

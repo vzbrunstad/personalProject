@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 import Navbar from "../components/Navbar/Navbar";
 import draftkitappAPI from '../api/draftkitappAPI.js'
-import * as ReactBootStrap from 'react-bootstrap'
+import ADPList from '../components/Lists/ADPList.js'
+import LeagueList from '../components/Lists/LeagueList.js'
+import PickList from '../components/Lists/PickList.js'
+import "bootstrap/dist/css/bootstrap.min.css"
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
+import "./styles.css"
 
 
-class HomePage extends Component {
+
+class DraftPlanPage extends Component {
   state = {
     players: [],
     league: [],
@@ -13,15 +19,13 @@ class HomePage extends Component {
 
   componentDidMount(){
     const id = this.props.match.params.id
-    console.log(localStorage.getItem("auth-user"))
     draftkitappAPI.fetchLeagueByID(id,localStorage.getItem("auth-user"))
       .then((APIresponseLeague) => {
         this.setState({
           league: APIresponseLeague
-          
         })
         console.log(this.state.league)
-
+        
       })
     
     
@@ -29,7 +33,6 @@ class HomePage extends Component {
       .then((APIresponsePlayer) => {
         this.setState({
           players: APIresponsePlayer
-          
         })
         console.log(this.state.players)
       })
@@ -38,93 +41,66 @@ class HomePage extends Component {
       .then((APIresponsePlayerADP) => {
         this.setState({
           ADP: APIresponsePlayerADP
-          
         })
         console.log(this.state.ADP)
       })
+  }
+
+  savePicks() {
+    console.log("hello")
   }
 
   
 
   render() {
     return (
-      <div>
-
-        <div className="ResearchPage">
-          <Navbar />
-        </div>
+          
+      <div className = "container">
+        <Navbar /> 
 
         <div>
         <h1> [League] Draft Plan</h1>
-        <ReactBootStrap.Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Draft Type</th>
-              <th>Number of Teams</th>
-              <th>Scoring</th>
-              <th>Team Composition</th>
-         
-            </tr>
-          </thead>
-          <tbody>
-            <tr key = { this.state.league.id }>
-              <td>{ this.state.league.id }</td>
-              <td>{ this.state.league.name }</td>
-              <td>{ this.state.league.draft_type }</td>
-              <td>{ this.state.league.number_of_teams }</td>
-              <td>{ this.state.league.scoring }</td>
-              <td>{ this.state.league.team_composition }</td>
-            </tr>
-            
-
-          </tbody>  
-        </ReactBootStrap.Table>
-
-        <ReactBootStrap.Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>ADP</th>
-              <th>Name</th>
-              <th>Pos</th>
-              <th>PasY</th>
-              <th>PasTD</th>
-              <th>RuY</th>
-              <th>RuTD</th>
-              <th>RecY</th>
-              <th>RecTD</th>
-              <th>F Pts</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-            this.state.players.map(item => (
-              <tr key = { item.PlayerID }>
-                <td>{ item.PlayerID }</td>
-                <td>{ this.state.ADP.AverageDraftPosition }</td>
-                <td>{ item.Name }</td>
-                <td>{ item.Position }</td>
-                <td>{ item.PassingYards }</td>
-                <td>{ item.PassingTouchdowns }</td>
-                <td>{ item.RushingYards }</td>
-                <td>{ item.RushingTouchdowns }</td>
-                <td>{ item.ReceivingYards }</td>
-                <td>{ item.ReceivingTouchdowns }</td>
-                <td>{ item.FantasyPointsFantasyDraft }</td>
-              </tr>
-            
-            ))
-            }
-          </tbody>  
-        </ReactBootStrap.Table>
-        
         </div>
+
+        <div className = "row">
+          <div>
+            <LeagueList league={this.state.league} />
+          </div>
+        </div>
+
+
+        <div className = "row"> 
+
+          <div className = "col">
+            <button onClick={this.savePicks}>Update Rankings</button>
+            <div className = "color1">
+              <ADPList ADP={this.state.ADP} />
+            </div>
+          </div>
+
+          <div className = "col">
+            <button onClick={this.savePicks}>Save Picks</button>
+            <div className = "color1">
+              <PickList />
+            </div>
+          </div>
+
+          <div className="col">
+            <div className = "color2">
+              3 of 3
+            </div>
+          </div>
+        </div>
+            
       </div>
+  
+
+
+
+
     )
   }
 }
 
-export default HomePage
+export default DraftPlanPage
 

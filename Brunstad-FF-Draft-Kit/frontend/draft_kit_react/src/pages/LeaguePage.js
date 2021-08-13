@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Navbar from "../components/Navbar/Navbar";
 import draftkitappAPI from '../api/draftkitappAPI.js'
-import LeagueList from '../components/Lists/LeaguelList.js'
+import LeaguesList from '../components/Lists/LeaguesList.js'
+
 
 
 class HomePage extends Component {
@@ -33,7 +34,7 @@ class HomePage extends Component {
         </div>
         <div>
         <h1> [User Placeholder] All leagues</h1>
-        <LeagueList leagues={this.state.leagues} />
+        <LeaguesList leagues={this.state.leagues} />
       
         </div>
       </div>

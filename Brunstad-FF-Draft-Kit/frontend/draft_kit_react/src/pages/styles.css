@@ -1,0 +1,19 @@
+.some-page-wrapper {
+  margin: 15px;
+
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  background: rgb(252, 245, 245);
+}
+
+.color1 {
+
+}
+.color2 {
+  background: rgb(218, 218, 235)
+}

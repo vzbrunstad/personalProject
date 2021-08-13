@@ -90,8 +90,8 @@ function App() {
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/league" component={LeaguePage} />
             <Route exact path="/league/:id" component={DraftPlanPage} />
-            {/* <Route exact path="/research" component={ResearchPage} /> */}
-            <Route exact path="/research" component={TestPage} />
+            <Route exact path="/research" component={ResearchPage} />
+            <Route exact path="/test" component={TestPage} />
             <Route exact path="/mockdraft" component={MockDraftPage} />
           </div>
         {/* </UserContext.Provider> */}

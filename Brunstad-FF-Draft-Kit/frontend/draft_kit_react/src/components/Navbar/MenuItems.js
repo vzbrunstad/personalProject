@@ -24,6 +24,11 @@ export const MenuItems= [
     url: 'login',
     cName: 'nav-links'
   },
+  {
+    title: 'Test Page',
+    url: 'test',
+    cName: 'nav-links'
+  },
  
 ]
 

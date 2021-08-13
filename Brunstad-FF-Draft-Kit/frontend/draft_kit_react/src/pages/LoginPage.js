@@ -7,7 +7,8 @@ const Login = ({isLoggedIn, handleLogout, handleLogin}) => {
     return <div>
       <button onClick={handleLogout}>Logout</button>
       <div>
-        <Link to='/'>Home</Link>
+        {/* <Link to='/'>Home</Link> */}
+        <meta http-equiv="Refresh" content="0; url='http://localhost:3000/'" />
       </div>
     </div>
   }
